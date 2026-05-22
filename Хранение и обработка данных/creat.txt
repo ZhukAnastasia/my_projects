@@ -1,0 +1,40 @@
+CREATE TABLE MOVIE_MONEY (
+	movie_id integer CHECK (movie_id > 0),
+  	movie_name varchar(50) NOT NULL,
+ 	box_office bigint CHECK (box_office >= 0),
+  	budget bigint CHECK (budget >= 0),
+	PRIMARY KEY (movie_id)
+);
+
+CREATE TABLE DIRECTOR (
+	director_id integer CHECK (director_id > 0),
+  	director_name varchar(50) NOT NULL,
+  	director_birthday date,
+  	director_country integer,
+	PRIMARY KEY (director_id),
+	UNIQUE (director_name, director_birthday, director_country)
+); 
+
+CREATE TABLE COUNTRY (
+	country_id integer CHECK (country_id > 0),
+  	country_name varchar(50) UNIQUE,
+	PRIMARY KEY (country_id)
+);
+
+CREATE TABLE MOVIE_FORMAT (
+	movie_format_id integer CHECK (movie_format_id > 0),
+  	movie_format_name varchar(30) UNIQUE,
+	PRIMARY KEY (movie_format_id)
+);
+
+CREATE TABLE MOVIE_INFORMATION (
+	movie_id integer REFERENCES MOVIE_MONEY (movie_id),
+  	movie_year integer,
+  	movie_duretion integer,
+  	director_1_id integer REFERENCES DIRECTOR (director_id),
+  	director_2_id integer REFERENCES DIRECTOR (director_id),
+ 	country_id integer REFERENCES COUNTRY (country_id),
+  	genre varchar(100),
+  	movie_format_id integer REFERENCES MOVIE_FORMAT (movie_format_id),
+	UNIQUE (movie_id, director_1_id, director_2_id, country_id, movie_format_id)
+);
